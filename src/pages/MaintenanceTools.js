@@ -20,9 +20,17 @@ const MaintenanceTools = () => {
     const loadTools = async () => {
       try {
         setLoading(true);
-        // Obtener herramientas filtradas por estado
-        const response = await getTools({ status: ['maintenance', 'damaged'] });
-        setTools(response.data || []);
+        // Obtener todas las herramientas y filtrar manualmente
+        const response = await getTools();
+        
+        // Filtrar solo las herramientas en mantenimiento o dañadas
+        const filteredTools = response.data.filter(
+          tool => tool.status === 'maintenance' || tool.status === 'damaged'
+        );
+        
+        console.log(`Filtrando: ${filteredTools.length} herramientas de mantenimiento de ${response.data.length} totales`);
+        
+        setTools(filteredTools);
         setError('');
       } catch (err) {
         setError('Error al cargar herramientas en mantenimiento');
@@ -31,7 +39,7 @@ const MaintenanceTools = () => {
         setLoading(false);
       }
     };
-
+  
     loadTools();
   }, []);
 

@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
   
   // Estados para controlar elementos de UI
-  const [sidebarOpen, setSidebarOpen] = useState(true);         // Control de visibilidad del sidebar en móvil
+  const [sidebarOpen, setSidebarOpen] = useState(false);         // Control de visibilidad del sidebar en móvil
   const [showScanner, setShowScanner] = useState(false);        // Control del modal de escáner QR
   const [unreadNotifications, setUnreadNotifications] = useState(0); // Contador de notificaciones
   
@@ -89,6 +89,30 @@ const Layout = ({ children }) => {
                 Catálogo de Herramientas
               </Link>
             </li>
+
+             {/* NUEVO: Enlace Herramientas Prestadas */}
+             {isAdmin && (
+              <li>
+                <Link
+                  to="/admin/borrowed-tools"
+                  className={`block py-2 px-4 ${location.pathname === '/admin/borrowed-tools' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}
+                >
+                  Herramientas Prestadas
+                </Link>
+              </li>
+            )}
+
+            {isAdmin && (
+              <li>
+                <Link 
+                  to="/admin/maintenance" 
+                  className={`block py-2 px-4 ${location.pathname === '/admin/maintenance' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}
+                >
+                  Herramientas en Mantenimiento
+                </Link>
+              </li>
+            )}
+
             <li>
               <Link 
                 to="/my-tools" 
@@ -97,7 +121,7 @@ const Layout = ({ children }) => {
                 Mis Herramientas
               </Link>
             </li>
-            
+
             {/* Enlaces solo para administradores */}
             {isAdmin && (
               <li>
@@ -110,13 +134,14 @@ const Layout = ({ children }) => {
               </li>
             )}
 
+            {/* NUEVO: Enlace para Gestión de Usuarios */}
             {isAdmin && (
               <li>
-                <Link 
-                  to="/admin/maintenance" 
-                  className={`block py-2 px-4 ${location.pathname === '/admin/maintenance' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}
+                <Link
+                  to="/admin/users"
+                  className={`block py-2 px-4 ${location.pathname === '/admin/users' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}
                 >
-                  Herramientas en Mantenimiento
+                  Gestión de Usuarios
                 </Link>
               </li>
             )}
