@@ -63,8 +63,8 @@ const QRScanner = ({ onClose }) => {
         });
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // El array vacío asegura que se ejecute solo al montar
+    
+  }, []); // El array vacío asegura que se ejecute solo al montar // eslint-disable-next-line react-hooks/exhaustive-deps
 
 
   // --- Procesar la URL escaneada ---
