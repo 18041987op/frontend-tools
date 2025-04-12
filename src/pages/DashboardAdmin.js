@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { Link } from 'react-router-dom';
 // MODIFICADO: Importar getLoans
-import { getTools, getLoans } from '../services/api'; // Asegúrate que getLoans esté importada
+
+import { getTools, getLoans } from '../services/api';
 
 const DashboardAdmin = () => {
   const [tools, setTools] = useState([]);
@@ -16,6 +17,12 @@ const DashboardAdmin = () => {
   const [loadingActivity, setLoadingActivity] = useState(true); // Carga separada
   const [errorActivity, setErrorActivity] = useState('');       // Error separado
 
+  // --- State for Loans Requiring Attention ---
+  const [attentionLoans, setAttentionLoans] = useState([]);
+  const [loadingAttention, setLoadingAttention] = useState(true);
+  const [errorAttention, setErrorAttention] = useState('');
+  const ADMIN_ESCALATION_DAYS = 2; // Or use the value from your notification config
+
   const today = new Date();
   const formattedDate = today.toLocaleDateString('es-ES', { /* ... opciones ... */ });
 
@@ -26,11 +33,22 @@ const DashboardAdmin = () => {
       setErrorStats('');
       setErrorActivity('');
 
+      // Reset report states
+      //setLoadingLateReport(true); // <-- AÑADIR
+      //setErrorLateReport('');   // <-- AÑADIR
+
+      // Reset states before fetching
+      //setLoadingAttention(true); // <-- AÑADIR ESTA
+      //setErrorAttention('');   // <-- AÑADIR ESTA
+
+      
+
       try {
         // Usamos Promise.allSettled para que una petición no falle la otra
         const results = await Promise.allSettled([
-          getTools(), // Para las estadísticas
-          getLoans({ sortBy: '-updatedAt', limit: 5 }) // Para actividad reciente (ordenar por última actualización)
+          getTools(), // For stats [index 0]
+          getLoans({ sortBy: '-updatedAt', limit: 5 }), // For recent activity [index 1]
+          getLoans({ status: 'active', severelyOverdueDays: ADMIN_ESCALATION_DAYS }) // For attention required [index 2] 
         ]);
 
         // Procesar resultado de getTools
@@ -49,6 +67,14 @@ const DashboardAdmin = () => {
           setErrorActivity('Error al cargar la actividad reciente.');
         }
 
+        // Process result for attention required loans (index 2)
+        if (results[2].status === 'fulfilled') {
+          setAttentionLoans(results[2].value.data || []);
+        } else {
+          console.error('Error loading attention required loans:', results[2].reason);
+          setErrorAttention('Error al cargar préstamos que requieren atención.');
+        }
+
       } catch (err) {
         // Este catch es por si Promise.allSettled falla (raro)
         console.error('Error general al cargar datos del dashboard:', err);
@@ -57,6 +83,8 @@ const DashboardAdmin = () => {
       } finally {
         setLoadingStats(false);
         setLoadingActivity(false);
+        setLoadingAttention(false); // <-- AÑADIR ESTA
+        //setLoadingLateReport(false); // <-- for Reports Quizas tenga que remover esta linea ya que la pagina de reportes es otra.
       }
     };
     fetchDashboardData();
@@ -177,6 +205,48 @@ const DashboardAdmin = () => {
                </ul>
             )}
          </div>
+
+         {/* NUEVA SECCIÓN: Préstamos que Requieren Atención */}
+        <div className="bg-white rounded-xl shadow p-4 mb-8 border border-yellow-300"> {/* Borde amarillo para destacar */}
+          <h2 className="text-lg font-semibold text-red-700 mb-4">⚠️ Seguimiento Requerido (Vencidos por {ADMIN_ESCALATION_DAYS}+ días)</h2> {/* Título destacado */}
+          {errorAttention && <p className="text-sm text-red-600 bg-red-50 p-2 rounded">{errorAttention}</p>}
+          {loadingAttention ? (
+             <p className="text-gray-500 italic">Cargando...</p>
+          ) : attentionLoans.length === 0 ? (
+            <p className="text-gray-500 italic">No hay préstamos con retraso significativo.</p>
+          ) : (
+            <ul className="divide-y divide-gray-100 max-h-60 overflow-y-auto"> {/* Limitar altura y scroll */}
+              {attentionLoans.map((loan) => {
+                 // Simple calculation for display, assumes expectedReturn is a valid Date
+                 const daysOverdue = Math.max(0, Math.ceil((new Date() - new Date(loan.expectedReturn)) / (1000 * 60 * 60 * 24)));
+                 return (
+                   <li key={`attention-${loan._id}`} className="py-3">
+                     <div className="flex justify-between items-start gap-2">
+                       <div>
+                         <p className="text-sm font-medium text-gray-900">
+                           {/* Link tool name to tool detail page */}
+                           <Link to={`/tools/${loan.tool?._id}`} className="hover:underline text-blue-600">
+                             {loan.tool?.name || 'Herramienta Eliminada'}
+                           </Link>
+                         </p>
+                         <p className="text-xs text-gray-600">
+                           Técnico: <span className="font-medium">{loan.technician?.name || 'Desconocido'}</span>
+                         </p>
+                         <p className="text-xs text-red-600"> {/* Highlight overdue info */}
+                           Venció: {new Date(loan.expectedReturn).toLocaleDateString()}
+                           {' '}({daysOverdue} {daysOverdue === 1 ? 'día' : 'días'} de retraso)
+                         </p>
+                       </div>
+                       {/* Optional: Link to technician details if needed */}
+                       {/* <Link to={`/admin/users/${loan.technician?._id}/edit`} className="text-xs bg-gray-100 px-2 py-1 rounded hover:bg-gray-200">Ver Téc.</Link> */}
+                     </div>
+                   </li>
+                 );
+              })}
+            </ul>
+          )}
+        </div>
+        {/* FIN NUEVA SECCIÓN */}
 
       </div>
     </Layout>

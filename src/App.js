@@ -6,8 +6,9 @@ import MaintenanceTools from './pages/MaintenanceTools';
 import UserManagement from './pages/UserManagement'; // NUEVO: Importar la nueva página
 import BorrowedTools from './pages/BorrowedTools'; // <-- NUEVO: Importar
 import ActivateAccount from './pages/ActivateAccount';
-import EditUser from './pages/EditUser'; // <-- NUEVO: Importar página de edición
-import EditTool from './pages/EditTool'; // <-- NUEVO: Importar página de edición de herramienta
+import EditUser from './pages/EditUser'; // <--  Importar página de edición
+import EditTool from './pages/EditTool'; // <--  Importar página de edición de herramienta
+import AdminReports from './pages/AdminReports'; // <-- AÑADIR IMPORTACIÓN
 
 
 import './App.css';
@@ -111,6 +112,11 @@ function App() {
         <Route path="/admin/users/:id/edit" element={ <AdminRoute> <EditUser /> </AdminRoute> } />
         {/* NUEVO: Ruta para editar herramienta */}
         <Route path="/admin/tools/:id/edit" element={<AdminRoute><EditTool /></AdminRoute>} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        {/* NUEVA RUTA PARA REPORTES */}
+        <Route path="/admin/reports" element={ <AdminRoute> <AdminReports /> </AdminRoute> } />
+        {/* FIN NUEVA RUTA */}
+
         <Route path="/" element={<Navigate to="/dashboard" />} />
       </Routes>
     </Router>

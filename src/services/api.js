@@ -3,6 +3,8 @@ import axios from 'axios';
 
 //**********
 //const API_URL = 'http://localhost:5000/api';
+//**********
+
 // const API_URL = window.location.hostname === 'localhost' 
 //   ? 'http://localhost:5000/api'
 //   : 'https://tools-autorx.onrender.com/api';
@@ -366,5 +368,32 @@ export const updateUserByAdmin = async (userId, userData) => {
     return response.data; // Esperamos { success: true, message: '...', data: updatedUser }
   } catch (error) {
     throw error.response?.data || { message: 'Error al actualizar usuario' };
+  }
+};
+
+// --- Report Functions ---
+
+export const getLateReturnsReport = async () => {
+  console.log("API: Fetching late returns report...");
+  try {
+    const response = await api.get('/reports/late-returns-by-technician');
+    console.log("API: Late returns report data received:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("API: Error fetching late returns report:", error.response?.data || error.message);
+    throw error.response?.data || { message: 'Error fetching late returns report' };
+  }
+};
+
+// NEW FUNCTION for damaged returns report
+export const getDamagedReturnsReport = async () => {
+  console.log("API: Fetching damaged returns report...");
+  try {
+    const response = await api.get('/reports/damaged-returns-by-technician');
+    console.log("API: Damaged returns report data received:", response.data);
+    return response.data; // Expected: { success: true, data: [...] }
+  } catch (error) {
+    console.error("API: Error fetching damaged returns report:", error.response?.data || error.message);
+    throw error.response?.data || { message: 'Error fetching damaged returns report' };
   }
 };
