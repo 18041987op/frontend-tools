@@ -1,9 +1,8 @@
-// src/pages/MyTools.js
+// frontend/src/pages/MyTools.js
 import React, { useState, useEffect, useCallback } from 'react';
-// MODIFICADO: Importar Link
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { getMyLoans, returnToolAPI } from '../services/api'; // Cambiado a returnToolAPI si esa es la función correcta
+import { getMyLoans, returnToolAPI } from '../services/api';
 
 const MyTools = () => {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ const MyTools = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Estados para el modal de devolución (se mantiene por si se reutiliza, aunque el botón ahora está fuera)
+  // State for the return modal
   const [showReturnModal, setShowReturnModal] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [returnData, setReturnData] = useState({
@@ -21,26 +20,29 @@ const MyTools = () => {
   const [returnError, setReturnError] = useState('');
   const [returnSuccess, setReturnSuccess] = useState('');
 
-  // Cargar préstamos activos
-  useEffect(() => {
-    const loadLoans = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const response = await getMyLoans();
-        setLoans(response.data?.filter(loan => loan.status === 'active') || []);
-      } catch (err) {
-        console.error('Error detallado al cargar préstamos:', err);
-        setError('Error al cargar herramientas prestadas.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadLoans();
-  }, []); // Carga solo al montar
+  // --- Fetch active loans for the current user ---
+  const loadLoans = useCallback(async () => { // Wrap in useCallback
+    setLoading(true);
+    setError('');
+    try {
+      const response = await getMyLoans();
+      // Filter on frontend just in case API didn't filter by 'active' status
+      setLoans(response.data?.filter(loan => loan.status === 'active') || []);
+    } catch (err) {
+      console.error('Detailed error loading loans:', err);
+      setError('Error loading borrowed tools.'); // English error
+    } finally {
+      setLoading(false);
+    }
+  }, []); // Empty dependency array for useCallback
 
-  // --- NUEVO: Funciones copiadas/adaptadas de Dashboard.js ---
+  useEffect(() => {
+    loadLoans();
+  }, [loadLoans]); // useEffect depends on the memoized loadLoans
+
+  // --- Time Formatting Logic (Copied from Dashboard.js) ---
   const formatTimeRemaining = useCallback((expectedReturn) => {
+    if (!expectedReturn) return { text: 'N/A', status: 'unknown' };
     const now = new Date();
     const returnDate = new Date(expectedReturn);
     const diffTime = returnDate.getTime() - now.getTime();
@@ -51,16 +53,16 @@ const MyTools = () => {
 
     if (totalMinutes < 0) {
       const overdueSeconds = Math.abs(Math.floor(diffTime / 1000));
-      if (overdueSeconds < 3600 * 2) return { text: `Retraso (${Math.floor(overdueSeconds / 60)}m)`, status: 'overdue' };
-      if (overdueSeconds < 86400 * 2) return { text: `Retraso (${Math.floor(overdueSeconds / 3600)}h)`, status: 'overdue' };
-      return { text: `Retraso (${Math.floor(overdueSeconds / 86400)}d)`, status: 'overdue' };
+      if (overdueSeconds < 3600 * 2) return { text: `Overdue (${Math.floor(overdueSeconds / 60)}m)`, status: 'overdue' };
+      if (overdueSeconds < 86400 * 2) return { text: `Overdue (${Math.floor(overdueSeconds / 3600)}h)`, status: 'overdue' };
+      return { text: `Overdue (${Math.floor(overdueSeconds / 86400)}d)`, status: 'overdue' };
     }
-    if (totalMinutes < 60) return { text: `Vence en ${totalMinutes}m`, status: 'dueSoon' };
-    if (totalHours < 6) return { text: `Vence en ${totalHours}h`, status: 'dueSoon' };
-    if (totalHours < 24) return { text: `Vence hoy (${totalHours}h)`, status: 'dueToday' };
-    if (totalDays === 1) return { text: `Vence mañana`, status: 'safe' };
-    return { text: `Quedan ${totalDays}d`, status: 'safe' };
-  }, []); // useCallback para evitar redefiniciones innecesarias
+    if (totalMinutes < 60) return { text: `Due in ${totalMinutes}m`, status: 'dueSoon' };
+    if (totalHours < 6) return { text: `Due in ${totalHours}h`, status: 'dueSoon' };
+    if (totalHours < 24) return { text: `Due today (${totalHours}h)`, status: 'dueToday' };
+    if (totalDays === 1) return { text: `Due tomorrow`, status: 'safe' };
+    return { text: `${totalDays}d remaining`, status: 'safe' };
+  }, []);
 
   const getStatusColorClass = useCallback((status) => {
       switch (status) {
@@ -71,9 +73,18 @@ const MyTools = () => {
           default: return 'text-gray-500';
       }
   }, []);
-  // --- FIN NUEVAS FUNCIONES ---
 
-  // --- Funciones para el modal de devolución ---
+  const formatDate = useCallback((dateString) => { // Memoize formatDate too
+    if (!dateString) return 'N/A';
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+    } catch (e) { return 'Invalid Date'; }
+  }, []);
+  // --- End Time Formatting ---
+
+  // --- Return Modal Handlers ---
   const handleReturnClick = (loan) => {
     setSelectedLoan(loan);
     setReturnData({
@@ -91,7 +102,7 @@ const MyTools = () => {
       returnCondition: {
         ...prev.returnCondition,
         hasDamage: name === 'hasDamage' ? checked : prev.returnCondition.hasDamage,
-        status: (name === 'hasDamage' && checked) ? 'damaged' : 'good',
+        status: (name === 'hasDamage' && checked) ? 'damaged' : 'good', // Set status based on damage flag
         damageDescription: name === 'damageDescription' ? value : prev.returnCondition.damageDescription
       }
     }));
@@ -104,58 +115,61 @@ const MyTools = () => {
     setReturnError('');
     setReturnSuccess('');
     try {
-      await returnToolAPI(selectedLoan._id, returnData); // Usar returnToolAPI
-      setReturnSuccess('Herramienta devuelta exitosamente.');
-      setLoans(prevLoans => prevLoans.filter(loan => loan._id !== selectedLoan._id)); // Actualizar lista local
+      await returnToolAPI(selectedLoan._id, returnData);
+      setReturnSuccess('Tool returned successfully.'); // English message
+      // Refresh the list after successful return
+      loadLoans(); // Call the memoized function
+      // Close modal after a delay
       setTimeout(() => {
         setShowReturnModal(false);
         setSelectedLoan(null);
-        setReturnSuccess(''); // Limpiar mensaje
-      }, 1500);
+        setReturnSuccess(''); // Clear success message
+      }, 1500); // Reduced delay
     } catch (err) {
-      console.error('Error completo al devolver herramienta:', err);
-      setReturnError(err.message || 'Error al devolver la herramienta.');
+      console.error('Error returning tool:', err);
+      setReturnError(err.message || 'Error returning tool.'); // English message
     } finally {
       setReturnLoading(false);
     }
   };
+  // --- End Return Modal Handlers ---
 
   return (
     <Layout>
-      <div className="p-4 sm:p-6 md:p-8"> {/* Añadido padding */}
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Mis Herramientas en Préstamo</h1>
+      {/* Added consistent padding */}
+      <div className="p-4 sm:p-6 md:p-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">My Borrowed Tools</h1> {/* English Title */}
 
         {error && (
           <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-            {error}
+            {error} {/* Error messages from API should be English now */}
           </div>
         )}
 
         {loading ? (
           <div className="text-center py-10">
-            <p className="text-gray-500">Cargando...</p>
+            <p className="text-gray-500">Loading borrowed tools...</p> {/* English Text */}
           </div>
         ) : loans.length === 0 ? (
-          <div className="bg-white p-6 rounded shadow text-center">
-            <p className="text-gray-600 mb-4">No tienes herramientas prestadas actualmente.</p>
+          // Added consistent styling
+          <div className="bg-white p-6 rounded-xl shadow text-center">
+            <p className="text-gray-600 mb-4">You currently have no tools on loan.</p> {/* English Text */}
             <button
               onClick={() => navigate('/catalog')}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              Ver Catálogo
+              View Tool Catalog {/* English Text */}
             </button>
           </div>
         ) : (
           <div className="space-y-4">
-            {/* MODIFICADO: Iterar y usar nueva lógica + Link */}
             {loans.map(loan => {
               if (!loan.tool) {
-                 // Manejar caso donde la herramienta pudo ser eliminada
-                 console.warn(`Préstamo ${loan._id} referencia a una herramienta eliminada.`);
+                 // Handle case where tool might have been deleted
+                 console.warn(`Loan ${loan._id} references a deleted tool.`);
                  return (
-                    <div key={loan._id} className="bg-red-50 p-4 rounded shadow flex justify-between items-center opacity-75">
-                       <p className='text-red-700 text-sm'>Préstamo activo para herramienta eliminada (ID Préstamo: {loan._id}). Contacta al administrador.</p>
-                       {/* Podrías añadir botón para forzar devolución si es necesario */}
+                    <div key={loan._id} className="bg-red-50 p-4 rounded-xl shadow flex justify-between items-center opacity-75"> {/* Consistent Style */}
+                       <p className='text-red-700 text-sm'>Active loan for a deleted tool (Loan ID: {loan._id}). Please contact an administrator.</p>
                     </div>
                  );
               }
@@ -164,36 +178,38 @@ const MyTools = () => {
               const colorClass = getStatusColorClass(timeInfo.status);
 
               return (
-                <div key={loan._id} className="bg-white p-4 rounded shadow flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                  {/* Sección de Información (Ahora es un Link) */}
-                   <Link to={`/tools/${loan.tool._id}`} className="flex-grow mb-3 sm:mb-0 sm:mr-4 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded p-1 -m-1">
+                // Added consistent styling to the card
+                <div key={loan._id} className="bg-white p-4 rounded-xl shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  {/* Link to tool details */}
+                  <Link to={`/tools/${loan.tool._id}`} className="flex-grow hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded p-1 -m-1">
                       <h2 className="text-lg font-semibold text-gray-900">{loan.tool.name}</h2>
                       <p className="text-sm text-gray-600">
-                        Prestada: {new Date(loan.borrowedAt).toLocaleDateString()} | Devolver: {new Date(loan.expectedReturn).toLocaleDateString()}
+                        Borrowed: {formatDate(loan.borrowedAt)} | Return Due: {formatDate(loan.expectedReturn)}
                       </p>
+                      {/* English Labels */}
                       {loan.purpose && (
                          <p className="text-sm text-gray-500 mt-1">
-                          Propósito: {loan.purpose}
+                          Purpose: {loan.purpose}
                          </p>
                       )}
                       {loan.vehicle && (
                          <p className="text-sm text-gray-500">
-                          Vehículo: {loan.vehicle}
+                          Vehicle: {loan.vehicle}
                          </p>
                       )}
-                      {/* Aquí podrías añadir el historial de transferencia si lo implementaste */}
-                   </Link>
+                      {/* Consider showing transfer history here if needed */}
+                  </Link>
 
-                  {/* Sección de Estado y Acciones */}
-                  <div className="flex-shrink-0 flex flex-col sm:items-end w-full sm:w-auto">
-                    <p className={`text-sm font-semibold mb-2 ${colorClass}`}>
-                      {timeInfo.text}
+                  {/* Status and Actions */}
+                  <div className="flex-shrink-0 flex flex-col sm:items-end w-full sm:w-auto space-y-2">
+                    <p className={`text-sm font-semibold ${colorClass}`}>
+                      {timeInfo.text} {/* Time text already in English */}
                     </p>
                     <button
-                      onClick={() => handleReturnClick(loan)}
-                      className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded text-sm"
+                      onClick={() => handleReturnClick(loan)} // Opens the return modal
+                      className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-300"
                     >
-                      Devolver
+                      Return {/* English Text */}
                     </button>
                   </div>
                 </div>
@@ -202,11 +218,11 @@ const MyTools = () => {
           </div>
         )}
 
-        {/* Modal de Devolución (Sin cambios en su estructura interna) */}
+        {/* Return Modal - Translate visible text */}
         {showReturnModal && selectedLoan && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg p-6 md:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
-              <h2 className="text-xl font-semibold mb-4">Devolver: {selectedLoan.tool.name}</h2>
+              <h2 className="text-xl font-semibold mb-4">Return Tool: {selectedLoan.tool?.name || 'Unknown Tool'}</h2>
               {returnError && <p className="mb-4 text-sm text-red-600 bg-red-50 p-2 rounded">{returnError}</p>}
               {returnSuccess && <p className="mb-4 text-sm text-green-600 bg-green-50 p-2 rounded">{returnSuccess}</p>}
               <form onSubmit={handleReturnSubmit}>
@@ -217,25 +233,25 @@ const MyTools = () => {
                       checked={returnData.returnCondition.hasDamage} onChange={handleReturnChange}
                       className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                     />
-                    <span className="text-sm text-gray-700">¿La herramienta presenta algún daño/problema?</span>
+                    <span className="text-sm text-gray-700">Report damage or issue with the tool?</span> {/* English Text */}
                   </label>
                 </div>
                 {returnData.returnCondition.hasDamage && (
                   <div className="mb-4">
                     <label htmlFor="damageDescription" className="block text-sm font-medium text-gray-700 mb-1">
-                      Descripción del daño o problema *
+                      Describe Damage/Issue *
                     </label>
                     <textarea
                       id="damageDescription" name="damageDescription" required={returnData.returnCondition.hasDamage}
                       value={returnData.returnCondition.damageDescription} onChange={handleReturnChange} rows="3"
                       className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-                      placeholder="Describe brevemente el problema..."
+                      placeholder="Briefly describe the problem..." // English Text
                     />
                   </div>
                 )}
                 <div className="flex justify-end gap-3 pt-4">
-                  <button type="button" onClick={() => setShowReturnModal(false)} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Cancelar</button>
-                  <button type="submit" disabled={returnLoading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{returnLoading ? 'Procesando...' : 'Confirmar Devolución'}</button>
+                  <button type="button" onClick={() => setShowReturnModal(false)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button> {/* English Text */}
+                  <button type="submit" disabled={returnLoading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{returnLoading ? 'Processing...' : 'Confirm Return'}</button> {/* English Text */}
                 </div>
               </form>
             </div>
@@ -247,6 +263,256 @@ const MyTools = () => {
 };
 
 export default MyTools;
+
+// // src/pages/MyTools.js
+// import React, { useState, useEffect, useCallback } from 'react';
+// // MODIFICADO: Importar Link
+// import { useNavigate, Link } from 'react-router-dom';
+// import Layout from '../components/Layout';
+// import { getMyLoans, returnToolAPI } from '../services/api'; // Cambiado a returnToolAPI si esa es la función correcta
+
+// const MyTools = () => {
+//   const navigate = useNavigate();
+//   const [loans, setLoans] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState('');
+
+//   // Estados para el modal de devolución (se mantiene por si se reutiliza, aunque el botón ahora está fuera)
+//   const [showReturnModal, setShowReturnModal] = useState(false);
+//   const [selectedLoan, setSelectedLoan] = useState(null);
+//   const [returnData, setReturnData] = useState({
+//     returnCondition: { status: 'good', hasDamage: false, damageDescription: '' }
+//   });
+//   const [returnLoading, setReturnLoading] = useState(false);
+//   const [returnError, setReturnError] = useState('');
+//   const [returnSuccess, setReturnSuccess] = useState('');
+
+//   // Cargar préstamos activos
+//   useEffect(() => {
+//     const loadLoans = async () => {
+//       setLoading(true);
+//       setError('');
+//       try {
+//         const response = await getMyLoans();
+//         setLoans(response.data?.filter(loan => loan.status === 'active') || []);
+//       } catch (err) {
+//         console.error('Error detallado al cargar préstamos:', err);
+//         setError('Error al cargar herramientas prestadas.');
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+//     loadLoans();
+//   }, []); // Carga solo al montar
+
+//   // --- NUEVO: Funciones copiadas/adaptadas de Dashboard.js ---
+//   const formatTimeRemaining = useCallback((expectedReturn) => {
+//     const now = new Date();
+//     const returnDate = new Date(expectedReturn);
+//     const diffTime = returnDate.getTime() - now.getTime();
+
+//     const totalMinutes = Math.floor(diffTime / (1000 * 60));
+//     const totalHours = Math.floor(diffTime / (1000 * 60 * 60));
+//     const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+//     if (totalMinutes < 0) {
+//       const overdueSeconds = Math.abs(Math.floor(diffTime / 1000));
+//       if (overdueSeconds < 3600 * 2) return { text: `Retraso (${Math.floor(overdueSeconds / 60)}m)`, status: 'overdue' };
+//       if (overdueSeconds < 86400 * 2) return { text: `Retraso (${Math.floor(overdueSeconds / 3600)}h)`, status: 'overdue' };
+//       return { text: `Retraso (${Math.floor(overdueSeconds / 86400)}d)`, status: 'overdue' };
+//     }
+//     if (totalMinutes < 60) return { text: `Vence en ${totalMinutes}m`, status: 'dueSoon' };
+//     if (totalHours < 6) return { text: `Vence en ${totalHours}h`, status: 'dueSoon' };
+//     if (totalHours < 24) return { text: `Vence hoy (${totalHours}h)`, status: 'dueToday' };
+//     if (totalDays === 1) return { text: `Vence mañana`, status: 'safe' };
+//     return { text: `Quedan ${totalDays}d`, status: 'safe' };
+//   }, []); // useCallback para evitar redefiniciones innecesarias
+
+//   const getStatusColorClass = useCallback((status) => {
+//       switch (status) {
+//           case 'overdue': return 'text-red-600';
+//           case 'dueSoon': return 'text-orange-500';
+//           case 'dueToday': return 'text-yellow-600';
+//           case 'safe': return 'text-green-600';
+//           default: return 'text-gray-500';
+//       }
+//   }, []);
+//   // --- FIN NUEVAS FUNCIONES ---
+
+//   // --- Funciones para el modal de devolución ---
+//   const handleReturnClick = (loan) => {
+//     setSelectedLoan(loan);
+//     setReturnData({
+//       returnCondition: { status: 'good', hasDamage: false, damageDescription: '' }
+//     });
+//     setReturnError('');
+//     setReturnSuccess('');
+//     setShowReturnModal(true);
+//   };
+
+//   const handleReturnChange = (e) => {
+//     const { name, value, type, checked } = e.target;
+//     setReturnData(prev => ({
+//       ...prev,
+//       returnCondition: {
+//         ...prev.returnCondition,
+//         hasDamage: name === 'hasDamage' ? checked : prev.returnCondition.hasDamage,
+//         status: (name === 'hasDamage' && checked) ? 'damaged' : 'good',
+//         damageDescription: name === 'damageDescription' ? value : prev.returnCondition.damageDescription
+//       }
+//     }));
+//   };
+
+//   const handleReturnSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!selectedLoan) return;
+//     setReturnLoading(true);
+//     setReturnError('');
+//     setReturnSuccess('');
+//     try {
+//       await returnToolAPI(selectedLoan._id, returnData); // Usar returnToolAPI
+//       setReturnSuccess('Herramienta devuelta exitosamente.');
+//       setLoans(prevLoans => prevLoans.filter(loan => loan._id !== selectedLoan._id)); // Actualizar lista local
+//       setTimeout(() => {
+//         setShowReturnModal(false);
+//         setSelectedLoan(null);
+//         setReturnSuccess(''); // Limpiar mensaje
+//       }, 1500);
+//     } catch (err) {
+//       console.error('Error completo al devolver herramienta:', err);
+//       setReturnError(err.message || 'Error al devolver la herramienta.');
+//     } finally {
+//       setReturnLoading(false);
+//     }
+//   };
+
+//   return (
+//     <Layout>
+//       <div className="p-4 sm:p-6 md:p-8"> {/* Añadido padding */}
+//         <h1 className="text-2xl font-bold text-gray-800 mb-6">Mis Herramientas en Préstamo</h1>
+
+//         {error && (
+//           <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+//             {error}
+//           </div>
+//         )}
+
+//         {loading ? (
+//           <div className="text-center py-10">
+//             <p className="text-gray-500">Cargando...</p>
+//           </div>
+//         ) : loans.length === 0 ? (
+//           <div className="bg-white p-6 rounded shadow text-center">
+//             <p className="text-gray-600 mb-4">No tienes herramientas prestadas actualmente.</p>
+//             <button
+//               onClick={() => navigate('/catalog')}
+//               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+//             >
+//               Ver Catálogo
+//             </button>
+//           </div>
+//         ) : (
+//           <div className="space-y-4">
+//             {/* MODIFICADO: Iterar y usar nueva lógica + Link */}
+//             {loans.map(loan => {
+//               if (!loan.tool) {
+//                  // Manejar caso donde la herramienta pudo ser eliminada
+//                  console.warn(`Préstamo ${loan._id} referencia a una herramienta eliminada.`);
+//                  return (
+//                     <div key={loan._id} className="bg-red-50 p-4 rounded shadow flex justify-between items-center opacity-75">
+//                        <p className='text-red-700 text-sm'>Préstamo activo para herramienta eliminada (ID Préstamo: {loan._id}). Contacta al administrador.</p>
+//                        {/* Podrías añadir botón para forzar devolución si es necesario */}
+//                     </div>
+//                  );
+//               }
+
+//               const timeInfo = formatTimeRemaining(loan.expectedReturn);
+//               const colorClass = getStatusColorClass(timeInfo.status);
+
+//               return (
+//                 <div key={loan._id} className="bg-white p-4 rounded shadow flex flex-col sm:flex-row justify-between items-start sm:items-center">
+//                   {/* Sección de Información (Ahora es un Link) */}
+//                    <Link to={`/tools/${loan.tool._id}`} className="flex-grow mb-3 sm:mb-0 sm:mr-4 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded p-1 -m-1">
+//                       <h2 className="text-lg font-semibold text-gray-900">{loan.tool.name}</h2>
+//                       <p className="text-sm text-gray-600">
+//                         Prestada: {new Date(loan.borrowedAt).toLocaleDateString()} | Devolver: {new Date(loan.expectedReturn).toLocaleDateString()}
+//                       </p>
+//                       {loan.purpose && (
+//                          <p className="text-sm text-gray-500 mt-1">
+//                           Propósito: {loan.purpose}
+//                          </p>
+//                       )}
+//                       {loan.vehicle && (
+//                          <p className="text-sm text-gray-500">
+//                           Vehículo: {loan.vehicle}
+//                          </p>
+//                       )}
+//                       {/* Aquí podrías añadir el historial de transferencia si lo implementaste */}
+//                    </Link>
+
+//                   {/* Sección de Estado y Acciones */}
+//                   <div className="flex-shrink-0 flex flex-col sm:items-end w-full sm:w-auto">
+//                     <p className={`text-sm font-semibold mb-2 ${colorClass}`}>
+//                       {timeInfo.text}
+//                     </p>
+//                     <button
+//                       onClick={() => handleReturnClick(loan)}
+//                       className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded text-sm"
+//                     >
+//                       Devolver
+//                     </button>
+//                   </div>
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         )}
+
+//         {/* Modal de Devolución (Sin cambios en su estructura interna) */}
+//         {showReturnModal && selectedLoan && (
+//           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+//             <div className="bg-white rounded-lg p-6 md:p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+//               <h2 className="text-xl font-semibold mb-4">Devolver: {selectedLoan.tool.name}</h2>
+//               {returnError && <p className="mb-4 text-sm text-red-600 bg-red-50 p-2 rounded">{returnError}</p>}
+//               {returnSuccess && <p className="mb-4 text-sm text-green-600 bg-green-50 p-2 rounded">{returnSuccess}</p>}
+//               <form onSubmit={handleReturnSubmit}>
+//                 <div className="mb-4">
+//                   <label className="flex items-center cursor-pointer">
+//                     <input
+//                       type="checkbox" name="hasDamage"
+//                       checked={returnData.returnCondition.hasDamage} onChange={handleReturnChange}
+//                       className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+//                     />
+//                     <span className="text-sm text-gray-700">¿La herramienta presenta algún daño/problema?</span>
+//                   </label>
+//                 </div>
+//                 {returnData.returnCondition.hasDamage && (
+//                   <div className="mb-4">
+//                     <label htmlFor="damageDescription" className="block text-sm font-medium text-gray-700 mb-1">
+//                       Descripción del daño o problema *
+//                     </label>
+//                     <textarea
+//                       id="damageDescription" name="damageDescription" required={returnData.returnCondition.hasDamage}
+//                       value={returnData.returnCondition.damageDescription} onChange={handleReturnChange} rows="3"
+//                       className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+//                       placeholder="Describe brevemente el problema..."
+//                     />
+//                   </div>
+//                 )}
+//                 <div className="flex justify-end gap-3 pt-4">
+//                   <button type="button" onClick={() => setShowReturnModal(false)} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Cancelar</button>
+//                   <button type="submit" disabled={returnLoading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{returnLoading ? 'Procesando...' : 'Confirmar Devolución'}</button>
+//                 </div>
+//               </form>
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     </Layout>
+//   );
+// };
+
+// export default MyTools;
 
 // // src/pages/MyTools.js
 // import React, { useState, useEffect } from 'react';

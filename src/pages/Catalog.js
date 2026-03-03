@@ -1,4 +1,6 @@
-// src/pages/Catalog.js
+
+
+//src/pages/Catalog.js
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { getTools } from '../services/api';
@@ -10,6 +12,17 @@ import {
   FaWind, FaHardHat, FaCarBattery // <-- NUEVOS/REASIGNADOS
 } from 'react-icons/fa';
 
+const PLACEHOLDER_IMG = 'data:image/svg+xml;utf8,' +
+  encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">
+      <rect width="100%" height="100%" fill="#e5e7eb"/>
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+            font-family="Arial" font-size="24" fill="#6b7280">
+        Sin imagen
+      </text>
+    </svg>
+  `);
+
 // Mapeo de slugs de categoría a nombres legibles, iconos y COLORES
 // AJUSTA ESTOS SEGÚN TUS PREFERENCIAS
 const categoryDetails = {
@@ -18,6 +31,7 @@ const categoryDetails = {
   // SEPARADOS:
   'electricas': { name: 'Herramientas Eléctricas', icon: <FaCarBattery size={28} className="text-yellow-500" /> }, // <-- Icono Batería
   'neumaticas': { name: 'Herramientas Neumáticas', icon: <FaWind size={28} className="text-cyan-500" /> },       // <-- Icono Viento (Aire)
+  'electricas_neumaticas': {name: 'Herramientas Eléctricas y Neumáticas', icon: <FaBolt className="text-purple-500" size={24} />,color: 'purple'},
   'medicion': { name: 'Herramientas de Medición', icon: <FaRulerCombined size={28} className="text-purple-500" /> },
   'motor_transmision': { name: 'Motor y Transmisión', icon: <FaCog size={28} className="text-orange-500" /> },
   'suspension_frenos': { name: 'Suspensión, Dirección y Frenos', icon: <FaCarCrash size={28} className="text-red-500" /> },
@@ -168,6 +182,17 @@ const Catalog = () => {
                             key={tool._id}
                             className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col justify-between border border-gray-100"
                           >
+                                  {/* ⬇️⬇️⬇️ AGREGAR LA IMAGEN AQUÍ COMO PRIMER ELEMENTO ⬇️⬇️⬇️ */}
+                                  <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden mb-4">
+                                    <img
+                                      src={tool.image || PLACEHOLDER_IMG}
+                                      alt={tool.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => { e.currentTarget.src = PLACEHOLDER_IMG; }}
+                                    />
+                                  </div>
+                                  {/* ⬆️⬆️⬆️ FIN DE LA IMAGEN ⬆️⬆️⬆️ */}
+
                             {/* Encabezado Tarjeta */}
                             <div className="flex items-center justify-between mb-4">
                               {/* Usar el icono de la categoría con su color */}
@@ -353,7 +378,7 @@ export default Catalog;
 
 
 
-//<<<-------*****-------------*****-------------*****-------------*****-------------*****-------------*****------>>>>
+// <<<-------*****-------------*****-------------*****-------------*****-------------*****-------------*****------>>>>
 
 // // src/pages/Catalog.js
 // import React, { useState, useEffect } from 'react';

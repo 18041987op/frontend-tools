@@ -62,9 +62,14 @@ node_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# Variables de entorno — NUNCA subir a git
+.env
+.env.local
 .env.development
 .env.production
+.env.development.local
+.env.test.local
+.env.production.local
 node_modules
 # dataconnect generated files
 .dataconnect
