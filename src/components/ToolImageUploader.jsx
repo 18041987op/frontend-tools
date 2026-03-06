@@ -6,12 +6,12 @@ import { uploadToolImage } from "../services/storage";
 
 const MAX_MB = 5;
 
-// Utiliza REACT_APP_API_BASE_URL o, si no está, intenta deducir host actual
+// Utiliza REACT_APP_API_BASE_URL o el backend de producción como fallback
 const API_BASE =
   process.env.REACT_APP_API_BASE_URL ||
   (window.location.origin.includes("localhost")
     ? "http://localhost:5000/api"
-    : `${window.location.origin.replace(/\/$/, "")}/api`);
+    : "https://tools-autorx.onrender.com/api");
 
 export default function ToolImageUploader({ toolId, onSaved }) {
   const [progress, setProgress] = useState(0);
