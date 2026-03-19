@@ -71,7 +71,7 @@ const Dashboard = () => {
   };
 
   const popularTools = [
-    { name: 'Scanner OBD2',    searchTerm: 'Scanner OBD2',         icon: HiOutlineCpuChip,           color: 'bg-blue-50 text-blue-600'   },
+    { name: 'Scanner OBD2',    searchTerm: 'Scanner OBD2',         icon: HiOutlineCpuChip,           color: 'bg-primary-50 text-primary-600'   },
     { name: 'Multímetro',      searchTerm: 'Multímetro Digital',   icon: HiOutlineBolt,              color: 'bg-yellow-50 text-yellow-600' },
     { name: 'Cargador A/C',    searchTerm: 'Juego Manómetros A/C', icon: HiOutlineWrench,            color: 'bg-green-50 text-green-600' },
     { name: 'Herramientas',    searchTerm: '',                     icon: HiOutlineWrenchScrewdriver, color: 'bg-purple-50 text-purple-600' },
@@ -91,7 +91,7 @@ const Dashboard = () => {
           <p className="text-slate-400 text-sm capitalize">{formattedDate}</p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <div className="bg-slate-700 rounded-xl px-4 py-2 flex items-center gap-2">
-              <HiOutlineWrenchScrewdriver className="w-5 h-5 text-blue-400" />
+              <HiOutlineWrenchScrewdriver className="w-5 h-5 text-primary-400" />
               <span className="text-sm font-medium">
                 {loading ? '...' : loans.length} herramienta{loans.length !== 1 ? 's' : ''} activa{loans.length !== 1 ? 's' : ''}
               </span>
@@ -121,7 +121,7 @@ const Dashboard = () => {
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
                 <h2 className="text-base font-semibold text-slate-800 flex items-center gap-2">
-                  <HiOutlineWrenchScrewdriver className="w-5 h-5 text-blue-600" />
+                  <HiOutlineWrenchScrewdriver className="w-5 h-5 text-primary-600" />
                   Mis Herramientas Actuales
                 </h2>
                 {!loading && (
@@ -221,7 +221,7 @@ const Dashboard = () => {
         {/* ── Acceso Rápido ── */}
         <div className="mt-6">
           <h2 className="text-base font-semibold text-slate-800 mb-3 flex items-center gap-2">
-            <HiOutlineSquares2X2 className="w-5 h-5 text-blue-600" />
+            <HiOutlineSquares2X2 className="w-5 h-5 text-primary-600" />
             Acceso Rápido
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -231,7 +231,7 @@ const Dashboard = () => {
                 <Link
                   key={idx}
                   to={tool.searchTerm ? `/catalog?search=${encodeURIComponent(tool.searchTerm)}` : '/catalog'}
-                  className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 hover:shadow-md hover:border-blue-200 transition-all text-center group"
+                  className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 hover:shadow-md hover:border-primary-200 transition-all text-center group"
                   aria-label={`Buscar ${tool.name}`}
                 >
                   <div className={`w-12 h-12 ${tool.color} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>

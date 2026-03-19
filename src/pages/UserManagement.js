@@ -103,7 +103,7 @@ const UserManagement = () => {
   return (
     <Layout>
       <div className="p-4 sm:p-6 md:p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Gestión de Usuarios</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mb-6">Gestión de Usuarios</h1>
 
         {/* Botón para mostrar/ocultar el formulario */}
         <div className="mb-4">
@@ -117,8 +117,8 @@ const UserManagement = () => {
 
         {/* Formulario de creación (condicional) */}
         {showCreateUserForm && (
-          <div className="bg-white rounded-xl shadow p-4 mb-8 border border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">Crear Nuevo Usuario</h2>
+          <div className="bg-white rounded-xl shadow p-4 mb-8 border border-slate-200">
+            <h2 className="text-lg font-semibold text-slate-700 mb-4">Crear Nuevo Usuario</h2>
             {createUserMessage && (
               <p className={`mb-4 text-sm ${createUserMessage.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>
                 {createUserMessage}
@@ -126,24 +126,24 @@ const UserManagement = () => {
             )}
             <form onSubmit={handleCreateUser} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre:</label>
+                <label className="block text-sm font-medium text-slate-700">Nombre:</label>
                 <input
                   type="text" name="name" value={newUser.name} onChange={handleNewUserChange} required
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Email:</label>
+                <label className="block text-sm font-medium text-slate-700">Email:</label>
                 <input
                   type="email" name="email" value={newUser.email} onChange={handleNewUserChange} required
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Rol:</label>
+                <label className="block text-sm font-medium text-slate-700">Rol:</label>
                 <select
                   name="role" value={newUser.role} onChange={handleNewUserChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="technician">Técnico</option>
                   <option value="admin">Admin</option>
@@ -151,7 +151,7 @@ const UserManagement = () => {
               </div>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 disabled={createUserLoading}
               >
                 {createUserLoading ? 'Creando...' : 'Crear Usuario'}
@@ -162,41 +162,41 @@ const UserManagement = () => {
 
         {/* Sección de Lista de Usuarios */}
         <div className="bg-white rounded-xl shadow overflow-hidden">
-          <h2 className="text-lg font-semibold text-gray-700 p-4 border-b">Lista de Usuarios</h2>
+          <h2 className="text-lg font-semibold text-slate-700 p-4 border-b">Lista de Usuarios</h2>
           {statusChangeError && <p className="p-4 text-red-600 bg-red-50">{statusChangeError}</p>}
 
           {/* Lógica de renderizado condicional para carga, error o tabla */}
           {loadingUsers ? (
-            <p className="p-4 text-gray-500">Cargando usuarios...</p>
+            <p className="p-4 text-slate-500">Cargando usuarios...</p>
           ) : errorUsers ? (
             <p className="p-4 text-red-600">{errorUsers}</p>
           ) : users.length === 0 ? (
-             <p className="p-4 text-gray-500">No hay usuarios registrados.</p>
+             <p className="p-4 text-slate-500">No hay usuarios registrados.</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-slate-200">
+                <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Miembro Desde</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nombre</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Rol</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Estado</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Miembro Desde</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-slate-200">
                   {users.map((user) => (
                     <tr key={user._id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.role}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">{user.name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{user.email}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{user.role}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                           {user.isActive ? 'Activo' : 'Inactivo'}
                         </span>
                       </td>
-                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                       <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                          {new Date(user.createdAt).toLocaleDateString()}
                        </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -400,21 +400,21 @@ export default UserManagement;
 //                                 <label htmlFor="create-name" className="block text-sm font-medium text-gray-700">Nombre:</label>
 //                                 <input
 //                                     type="text" id="create-name" name="name" value={newUser.name} onChange={handleNewUserChange} required
-//                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+//                                     className="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
 //                                 />
 //                             </div>
 //                             <div>
 //                                 <label htmlFor="create-email" className="block text-sm font-medium text-gray-700">Email:</label>
 //                                 <input
 //                                     type="email" id="create-email" name="email" value={newUser.email} onChange={handleNewUserChange} required
-//                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+//                                     className="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
 //                                 />
 //                             </div>
 //                             <div>
 //                                 <label htmlFor="create-role" className="block text-sm font-medium text-gray-700">Rol:</label>
 //                                 <select
 //                                     id="create-role" name="role" value={newUser.role} onChange={handleNewUserChange}
-//                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+//                                     className="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
 //                                 >
 //                                     <option value="technician">Técnico</option>
 //                                     <option value="admin">Admin</option>

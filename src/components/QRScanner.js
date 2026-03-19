@@ -108,11 +108,11 @@ const QRScanner = ({ onClose }) => {
       )}
 
       {/* Contenedor donde se renderizará la UI del escáner */}
-      <div id="qr-scanner-container" className="w-full max-w-md mx-auto border bg-gray-100 rounded">
+      <div id="qr-scanner-container" className="w-full max-w-md mx-auto border bg-slate-100 rounded">
          {/* El componente Html5QrcodeScanner insertará la UI aquí */}
       </div>
 
-      <p className="mt-4 text-sm text-gray-500 text-center">
+      <p className="mt-4 text-sm text-slate-500 text-center">
         Apunta la cámara de tu dispositivo al código QR de la herramienta.
       </p>
 

@@ -39,7 +39,7 @@ const getStatusInfo = (status) => {
       case 'damaged':
         return { text: 'Damaged', color: 'bg-red-100 text-red-700' };
       default:
-        return { text: 'Unknown', color: 'bg-gray-100 text-gray-600' };
+        return { text: 'Unknown', color: 'bg-slate-100 text-slate-600' };
     }
   };
 
@@ -319,7 +319,7 @@ const ToolDetail = () => {
   // --- Render Logic ---
 
   if (loading && !tool) { // Show loading only if tool data isn't available yet
-    return <Layout><div className="text-center py-10"><p className="text-gray-500">Loading...</p></div></Layout>;
+    return <Layout><div className="text-center py-10"><p className="text-slate-500">Loading...</p></div></Layout>;
   }
 
   if (error || !tool) {
@@ -330,7 +330,7 @@ const ToolDetail = () => {
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                 <p>{error || 'Tool could not be found.'}</p>
             </div>
-            <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" onClick={() => navigate('/catalog')}>
+            <button className="mt-2 bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-700" onClick={() => navigate('/catalog')}>
                 Back to Catalog
             </button>
         </div>
@@ -347,10 +347,10 @@ const ToolDetail = () => {
       <div className="p-4 sm:p-6 md:p-8">
         {/* Header */}
         <div className="mb-4 flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="text-blue-600 hover:text-blue-800 text-sm">
+          <button onClick={() => navigate(-1)} className="text-primary-600 hover:text-primary-800 text-sm">
              &larr; Back
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">{tool.name}</h1>
+          <h1 className="text-2xl font-bold text-slate-900">{tool.name}</h1>
         </div>
 
         {/* Main Content Block - Added consistent styling */}
@@ -358,8 +358,8 @@ const ToolDetail = () => {
           <div className="flex flex-col md:flex-row">
 
             {/* Left Panel: Image & Actions */}
-            <div className="w-full md:w-1/3 p-4 md:p-6 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
-              <div className="w-full rounded-lg overflow-hidden bg-gray-100 mb-4" style={{ aspectRatio: '16 / 9' }}>
+            <div className="w-full md:w-1/3 p-4 md:p-6 bg-slate-50 border-b md:border-b-0 md:border-r border-slate-200">
+              <div className="w-full rounded-lg overflow-hidden bg-slate-100 mb-4" style={{ aspectRatio: '16 / 9' }}>
                 {tool?.image ? (
                   <img
                     src={tool.image}
@@ -386,8 +386,8 @@ const ToolDetail = () => {
                  </span>
 
                 {tool.status === 'borrowed' && activeLoan && (
-                  <div className="text-sm mt-1 border-t border-gray-200 pt-2 space-y-1">
-                    <p>Loaned to: <strong className="text-gray-800">{activeLoan.technician?.name || 'Unknown'}</strong></p>
+                  <div className="text-sm mt-1 border-t border-slate-200 pt-2 space-y-1">
+                    <p>Loaned to: <strong className="text-slate-800">{activeLoan.technician?.name || 'Unknown'}</strong></p>
                     <p>Since: {formatDate(activeLoan.borrowedAt)}</p>
                     <p>Expected Return: {formatDate(activeLoan.expectedReturn)}</p>
                     {activeLoan.purpose && <p>Purpose: {activeLoan.purpose}</p>}
@@ -401,7 +401,7 @@ const ToolDetail = () => {
                 {tool.status === 'available' && (
                   <button
                     onClick={() => setShowBorrowForm(true)}
-                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                    className="w-full bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                   >
                     Request Loan
                   </button>
@@ -441,7 +441,7 @@ const ToolDetail = () => {
                  {isAdmin && (
                     <Link
                         to={`/admin/tools/${tool._id}/edit`}
-                        className="block w-full text-center bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                        className="block w-full text-center bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
                     >
                         Edit Tool
                     </Link>
@@ -451,40 +451,40 @@ const ToolDetail = () => {
 
             {/* Right Panel: Details */}
             <div className="w-full md:w-2/3 p-4 md:p-6">
-              <h2 className="text-lg font-semibold mb-3 border-b border-gray-200 pb-2 text-gray-800">Tool Details</h2>
+              <h2 className="text-lg font-semibold mb-3 border-b border-slate-200 pb-2 text-slate-800">Tool Details</h2>
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4 text-sm"> {/* Increased gap-y */}
                 <div className="sm:col-span-1">
-                  <dt className="font-medium text-gray-500">Category</dt>
-                  <dd className="mt-1 text-gray-900">{tool.category || 'N/A'}</dd> {/* Simple display for now */}
+                  <dt className="font-medium text-slate-500">Category</dt>
+                  <dd className="mt-1 text-slate-900">{tool.category || 'N/A'}</dd> {/* Simple display for now */}
                 </div>
                  <div className="sm:col-span-1">
-                  <dt className="font-medium text-gray-500">Serial Number</dt>
-                  <dd className="mt-1 text-gray-900">{tool.serialNumber || 'N/A'}</dd>
+                  <dt className="font-medium text-slate-500">Serial Number</dt>
+                  <dd className="mt-1 text-slate-900">{tool.serialNumber || 'N/A'}</dd>
                 </div>
                  <div className="sm:col-span-1">
-                  <dt className="font-medium text-gray-500">Location</dt>
-                  <dd className="mt-1 text-gray-900">{tool.location || 'N/A'}</dd>
+                  <dt className="font-medium text-slate-500">Location</dt>
+                  <dd className="mt-1 text-slate-900">{tool.location || 'N/A'}</dd>
                 </div>
                 {/* Display Cost */}
                  <div className="sm:col-span-1">
-                   <dt className="font-medium text-gray-500">Cost / Value</dt>
-                   <dd className="mt-1 text-gray-900">
+                   <dt className="font-medium text-slate-500">Cost / Value</dt>
+                   <dd className="mt-1 text-slate-900">
                      {tool.cost && tool.cost > 0 ? `$${tool.cost.toFixed(2)}` : 'Not specified'}
                    </dd>
                  </div>
                 {tool.lastMaintenance && (
                   <div className="sm:col-span-1">
-                    <dt className="font-medium text-gray-500">Last Maintenance</dt>
-                    <dd className="mt-1 text-gray-900">{formatDate(tool.lastMaintenance)}</dd>
+                    <dt className="font-medium text-slate-500">Last Maintenance</dt>
+                    <dd className="mt-1 text-slate-900">{formatDate(tool.lastMaintenance)}</dd>
                   </div>
                 )}
                  <div className="sm:col-span-2">
-                  <dt className="font-medium text-gray-500">Description</dt>
-                  <dd className="mt-1 text-gray-900 whitespace-pre-wrap">{tool.description || 'No description provided.'}</dd>
+                  <dt className="font-medium text-slate-500">Description</dt>
+                  <dd className="mt-1 text-slate-900 whitespace-pre-wrap">{tool.description || 'No description provided.'}</dd>
                 </div>
                  <div className="sm:col-span-2">
-                  <dt className="font-medium text-gray-500">Added On</dt>
-                  <dd className="mt-1 text-gray-900">{formatDate(tool.createdAt)}</dd>
+                  <dt className="font-medium text-slate-500">Added On</dt>
+                  <dd className="mt-1 text-slate-900">{formatDate(tool.createdAt)}</dd>
                 </div>
                  {/* TODO: Display addedBy user name if populated */}
               </dl>
@@ -506,18 +506,18 @@ const ToolDetail = () => {
               {borrowSuccess && <p className="mb-4 text-sm text-green-600 bg-green-50 p-2 rounded">{borrowSuccess}</p>}
 
               {/* Cost Information */}
-              <p className="text-sm text-gray-600 mb-4 border-t pt-3">
+              <p className="text-sm text-slate-600 mb-4 border-t pt-3">
                 Note: Replacement cost is approximately {tool.cost && tool.cost > 0 ? `$${tool.cost.toFixed(2)}` : 'not specified'}.
               </p>
 
               <form onSubmit={handleBorrowSubmit} className="space-y-4">
                  <div>
-                   <label htmlFor="purpose" className="block text-sm font-medium text-gray-700">Purpose *</label>
-                   <textarea id="purpose" name="purpose" value={borrowData.purpose} onChange={handleBorrowChange} required rows="3" className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"></textarea>
+                   <label htmlFor="purpose" className="block text-sm font-medium text-slate-700">Purpose *</label>
+                   <textarea id="purpose" name="purpose" value={borrowData.purpose} onChange={handleBorrowChange} required rows="3" className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"></textarea>
                  </div>
                  <div>
-                   <label htmlFor="loanDuration" className="block text-sm font-medium text-gray-700">Duration *</label>
-                   <select id="loanDuration" name="loanDuration" value={borrowData.loanDuration} onChange={handleBorrowChange} required className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                   <label htmlFor="loanDuration" className="block text-sm font-medium text-slate-700">Duration *</label>
+                   <select id="loanDuration" name="loanDuration" value={borrowData.loanDuration} onChange={handleBorrowChange} required className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                      <option value="1h">1 hour</option>
                      <option value="2h">2 hours</option>
                      <option value="4h">4 hours</option>
@@ -532,17 +532,17 @@ const ToolDetail = () => {
                  </div>
                  {borrowData.loanDuration === 'custom' && (
                    <div>
-                     <label htmlFor="expectedReturn" className="block text-sm font-medium text-gray-700">Return Date *</label>
-                     <input type="date" id="expectedReturn" name="expectedReturn" value={borrowData.expectedReturn} onChange={handleBorrowChange} required min={new Date().toISOString().split('T')[0]} className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"/>
+                     <label htmlFor="expectedReturn" className="block text-sm font-medium text-slate-700">Return Date *</label>
+                     <input type="date" id="expectedReturn" name="expectedReturn" value={borrowData.expectedReturn} onChange={handleBorrowChange} required min={new Date().toISOString().split('T')[0]} className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"/>
                    </div>
                  )}
                   <div>
-                     <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700">Vehicle (Optional)</label>
-                     <input type="text" id="vehicle" name="vehicle" value={borrowData.vehicle} onChange={handleBorrowChange} placeholder="Make, Model, Year, Plate..." className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"/>
+                     <label htmlFor="vehicle" className="block text-sm font-medium text-slate-700">Vehicle (Optional)</label>
+                     <input type="text" id="vehicle" name="vehicle" value={borrowData.vehicle} onChange={handleBorrowChange} placeholder="Make, Model, Year, Plate..." className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"/>
                   </div>
                  <div className="flex justify-end gap-3 pt-4">
-                   <button type="button" onClick={() => setShowBorrowForm(false)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
-                   <button type="submit" disabled={borrowLoading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{borrowLoading ? 'Requesting...' : 'Confirm Loan'}</button>
+                   <button type="button" onClick={() => setShowBorrowForm(false)} className="bg-slate-300 hover:bg-slate-400 text-slate-800 font-bold py-2 px-4 rounded">Cancel</button>
+                   <button type="submit" disabled={borrowLoading} className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{borrowLoading ? 'Requesting...' : 'Confirm Loan'}</button>
                  </div>
               </form>
             </div>
@@ -556,7 +556,7 @@ const ToolDetail = () => {
                <h2 className="text-xl font-semibold mb-4">Transfer Tool: {tool.name}</h2>
                {transferError && <p className="mb-4 text-sm text-red-600 bg-red-50 p-2 rounded">{transferError}</p>}
                {transferSuccess && <p className="mb-4 text-sm text-green-600 bg-green-50 p-2 rounded">{transferSuccess}</p>}
-               <p className="mb-4 text-sm text-gray-600">
+               <p className="mb-4 text-sm text-slate-600">
                  {currentUserHasTool ? `Select technician to transfer to:` : `Requesting transfer from ${activeLoan.technician?.name || 'current holder'}. Select new recipient:`}
                </p>
                <form onSubmit={handleTransferSubmit} className="space-y-4">
@@ -568,12 +568,12 @@ const ToolDetail = () => {
                    />
                    {/* Other Transfer fields */}
                    <div>
-                     <label htmlFor="transferPurpose" className="block text-sm font-medium text-gray-700">Purpose *</label>
-                     <textarea id="transferPurpose" name="purpose" value={transferData.purpose} onChange={handleTransferChange} required rows="2" className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"></textarea>
+                     <label htmlFor="transferPurpose" className="block text-sm font-medium text-slate-700">Purpose *</label>
+                     <textarea id="transferPurpose" name="purpose" value={transferData.purpose} onChange={handleTransferChange} required rows="2" className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"></textarea>
                    </div>
                    <div>
-                    <label htmlFor="transferLoanDuration" className="block text-sm font-medium text-gray-700">New Duration *</label>
-                    <select id="transferLoanDuration" name="loanDuration" value={transferData.loanDuration} onChange={handleTransferChange} required className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    <label htmlFor="transferLoanDuration" className="block text-sm font-medium text-slate-700">New Duration *</label>
+                    <select id="transferLoanDuration" name="loanDuration" value={transferData.loanDuration} onChange={handleTransferChange} required className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                       <option value="1h">1 hour</option>
                       <option value="2h">2 hours</option>
                       <option value="4h">4 hours</option>
@@ -588,20 +588,20 @@ const ToolDetail = () => {
                   </div>
                   {transferData.loanDuration === 'custom' && (
                     <div>
-                      <label htmlFor="transferExpectedReturn" className="block text-sm font-medium text-gray-700">New Return Date *</label>
-                      <input type="date" id="transferExpectedReturn" name="expectedReturn" value={transferData.expectedReturn} onChange={handleTransferChange} required min={new Date().toISOString().split('T')[0]} className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"/>
+                      <label htmlFor="transferExpectedReturn" className="block text-sm font-medium text-slate-700">New Return Date *</label>
+                      <input type="date" id="transferExpectedReturn" name="expectedReturn" value={transferData.expectedReturn} onChange={handleTransferChange} required min={new Date().toISOString().split('T')[0]} className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"/>
                     </div>
                   )}
                    <div>
-                      <label htmlFor="transferVehicle" className="block text-sm font-medium text-gray-700">Vehicle (Optional)</label>
-                      <input type="text" id="transferVehicle" name="vehicle" value={transferData.vehicle} onChange={handleTransferChange} placeholder="Make, Model, Year, Plate..." className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"/>
+                      <label htmlFor="transferVehicle" className="block text-sm font-medium text-slate-700">Vehicle (Optional)</label>
+                      <input type="text" id="transferVehicle" name="vehicle" value={transferData.vehicle} onChange={handleTransferChange} placeholder="Make, Model, Year, Plate..." className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"/>
                    </div>
                    <div>
-                      <label htmlFor="transferNotes" className="block text-sm font-medium text-gray-700">Notes (Optional)</label>
-                      <textarea id="transferNotes" name="notes" value={transferData.notes} onChange={handleTransferChange} rows="2" className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"></textarea>
+                      <label htmlFor="transferNotes" className="block text-sm font-medium text-slate-700">Notes (Optional)</label>
+                      <textarea id="transferNotes" name="notes" value={transferData.notes} onChange={handleTransferChange} rows="2" className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"></textarea>
                    </div>
                  <div className="flex justify-end gap-3 pt-4">
-                   <button type="button" onClick={() => setShowTransferForm(false)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button>
+                   <button type="button" onClick={() => setShowTransferForm(false)} className="bg-slate-300 hover:bg-slate-400 text-slate-800 font-bold py-2 px-4 rounded">Cancel</button>
                    <button type="submit" disabled={transferLoading} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{transferLoading ? 'Processing...' : 'Confirm Transfer'}</button>
                  </div>
                </form>

@@ -66,7 +66,7 @@ export default function ToolImageUploader({ toolId, onSaved }) {
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-slate-700">
         Subir/Actualizar imagen
       </label>
       <input
@@ -74,7 +74,7 @@ export default function ToolImageUploader({ toolId, onSaved }) {
         accept="image/*"
         disabled={uploading}
         onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-        className="block w-full text-sm text-gray-700"
+        className="block w-full text-sm text-slate-700"
       />
       {uploading && <div>Subiendo… {progress}%</div>}
       {error && <div style={{ color: "red" }}>{error}</div>}

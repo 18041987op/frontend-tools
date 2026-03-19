@@ -46,7 +46,7 @@ const BorrowedTools = () => {
   return (
     <Layout>
       <div className="p-4 sm:p-6 md:p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Herramientas Actualmente en Préstamo</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mb-6">Herramientas Actualmente en Préstamo</h1>
 
         {error && (
           <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -55,39 +55,39 @@ const BorrowedTools = () => {
         )}
 
         {loading ? (
-          <p className="text-gray-500">Cargando...</p>
+          <p className="text-slate-500">Cargando...</p>
         ) : activeLoans.length === 0 ? (
-          <p className="text-gray-600">No hay herramientas prestadas en este momento.</p>
+          <p className="text-slate-600">No hay herramientas prestadas en este momento.</p>
         ) : (
           <div className="bg-white rounded-xl shadow overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-slate-200">
+                <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Herramienta</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prestada a</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Préstamo</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Devolución Esperada</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Días Restantes / Retraso</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Herramienta</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Prestada a</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Fecha Préstamo</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Devolución Esperada</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Días Restantes / Retraso</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-slate-200">
                   {activeLoans.map((loan) => {
                     const daysLeft = calculateDaysLeft(loan.expectedReturn);
                     return (
                       <tr key={loan._id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                           {loan.tool?.name || 'Herramienta Eliminada'}
-                           {loan.tool?.serialNumber && <span className="block text-xs text-gray-500">S/N: {loan.tool.serialNumber}</span>}
+                           {loan.tool?.serialNumber && <span className="block text-xs text-slate-500">S/N: {loan.tool.serialNumber}</span>}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                           {loan.technician?.name || 'Técnico Desconocido'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                           {new Date(loan.borrowedAt).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                           {new Date(loan.expectedReturn).toLocaleDateString()}
                         </td>
                         <td className={`px-6 py-4 whitespace-nowrap text-sm font-semibold ${
@@ -98,7 +98,7 @@ const BorrowedTools = () => {
                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           {/* Enlace para ver detalles de la herramienta si aún existe */}
                           {loan.tool?._id && (
-                             <Link to={`/tools/${loan.tool._id}`} className="text-blue-600 hover:text-blue-900">
+                             <Link to={`/tools/${loan.tool._id}`} className="text-primary-600 hover:text-primary-900">
                                 Ver Herramienta
                              </Link>
                           )}

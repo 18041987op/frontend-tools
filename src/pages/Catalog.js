@@ -26,8 +26,8 @@ const PLACEHOLDER_IMG = 'data:image/svg+xml;utf8,' +
 // Mapeo de slugs de categoría a nombres legibles, iconos y COLORES
 // AJUSTA ESTOS SEGÚN TUS PREFERENCIAS
 const categoryDetails = {
-  'diagnostico': { name: 'Diagnóstico', icon: <FaMicroscope size={28} className="text-blue-500" /> },
-  'manuales': { name: 'Herramientas Manuales', icon: <FaTools size={28} className="text-gray-700" /> },
+  'diagnostico': { name: 'Diagnóstico', icon: <FaMicroscope size={28} className="text-primary-500" /> },
+  'manuales': { name: 'Herramientas Manuales', icon: <FaTools size={28} className="text-slate-700" /> },
   // SEPARADOS:
   'electricas': { name: 'Herramientas Eléctricas', icon: <FaCarBattery size={28} className="text-yellow-500" /> }, // <-- Icono Batería
   'neumaticas': { name: 'Herramientas Neumáticas', icon: <FaWind size={28} className="text-cyan-500" /> },       // <-- Icono Viento (Aire)
@@ -35,11 +35,11 @@ const categoryDetails = {
   'medicion': { name: 'Herramientas de Medición', icon: <FaRulerCombined size={28} className="text-purple-500" /> },
   'motor_transmision': { name: 'Motor y Transmisión', icon: <FaCog size={28} className="text-orange-500" /> },
   'suspension_frenos': { name: 'Suspensión, Dirección y Frenos', icon: <FaCarCrash size={28} className="text-red-500" /> },
-  'aire_acondicionado': { name: 'Aire Acondicionado (A/C)', icon: <FaSnowflake size={28} className="text-blue-300" /> }, // Color ajustado para diferenciar
+  'aire_acondicionado': { name: 'Aire Acondicionado (A/C)', icon: <FaSnowflake size={28} className="text-primary-300" /> }, // Color ajustado para diferenciar
   'neumaticos_ruedas': { name: 'Neumáticos y Ruedas', icon: <FaDotCircle size={28} className="text-lime-600" /> },
   'manejo_fluidos': { name: 'Manejo de Fluidos', icon: <FaOilCan size={28} className="text-teal-500" /> },
   'elevacion_soporte': { name: 'Equipos de Elevación y Soporte', icon: <FaHardHat size={28} className="text-indigo-500" /> }, // <-- Icono Casco
-  'otros': { name: 'Otros / Misceláneos', icon: <FaWrench size={28} className="text-gray-500" /> },
+  'otros': { name: 'Otros / Misceláneos', icon: <FaWrench size={28} className="text-slate-500" /> },
 };
 
 const Catalog = () => {
@@ -123,7 +123,7 @@ const Catalog = () => {
        case 'en uso': case 'borrowed': return 'bg-yellow-100 text-yellow-800';
        case 'dañada': case 'damaged': return 'bg-red-100 text-red-700';
        case 'en reparación': case 'maintenance': case 'in repair': return 'bg-orange-100 text-orange-700';
-       default: return 'bg-gray-100 text-gray-600';
+       default: return 'bg-slate-100 text-slate-600';
      }
    };
 
@@ -131,45 +131,45 @@ const Catalog = () => {
   return (
     <Layout>
       <div className="p-4 sm:p-6 md:p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Catálogo de Herramientas</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mb-4">Catálogo de Herramientas</h1>
 
         {/* Barra de búsqueda */}
         <input
           type="text"
           placeholder="Buscar por nombre, serial, ubicación, categoría..."
-          className="w-full sm:w-96 mb-6 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+          className="w-full sm:w-96 mb-6 px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-primary-300"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
         {/* Contenido principal */}
         {loading ? (
-            <p className="text-gray-500 text-center py-10">Cargando herramientas...</p>
+            <p className="text-slate-500 text-center py-10">Cargando herramientas...</p>
         ) : sortedCategories.length === 0 ? (
-             <p className="mt-8 text-gray-500 text-center">
+             <p className="mt-8 text-slate-500 text-center">
                 {search ? 'No se encontraron herramientas con ese criterio.' : 'No hay herramientas en el catálogo.'}
             </p>
         ) : (
            sortedCategories.map(categoryKey => {
               const isOpen = openCategories.includes(categoryKey);
-              const categoryInfo = categoryDetails[categoryKey] || { name: categoryKey, icon: <FaWrench size={24} className="text-gray-500" /> }; // Fallback
+              const categoryInfo = categoryDetails[categoryKey] || { name: categoryKey, icon: <FaWrench size={24} className="text-slate-500" /> }; // Fallback
               return (
                 <div key={categoryKey} className="mb-6 bg-white rounded-lg shadow overflow-hidden">
                   {/* Título de la Categoría Clickable */}
                   <button
                     onClick={() => toggleCategory(categoryKey)}
-                    className="w-full flex justify-between items-center p-4 border-b hover:bg-gray-50 focus:outline-none"
+                    className="w-full flex justify-between items-center p-4 border-b hover:bg-slate-50 focus:outline-none"
                     aria-expanded={isOpen} // Para accesibilidad
                     aria-controls={`category-content-${categoryKey}`}
                   >
                     <div className="flex items-center">
                       {/* Clonar el icono para ajustar tamaño si es necesario */}
                       {React.cloneElement(categoryInfo.icon, { size: 24, className: `${categoryInfo.icon.props.className} mr-3` })}
-                      <span className="ml-0 text-lg font-semibold text-gray-700"> {/* Ajustado ml-0 */}
+                      <span className="ml-0 text-lg font-semibold text-slate-700"> {/* Ajustado ml-0 */}
                         {categoryInfo.name}
                       </span>
                     </div>
-                    {isOpen ? <FaChevronUp className="text-gray-500"/> : <FaChevronDown className="text-gray-500"/>}
+                    {isOpen ? <FaChevronUp className="text-slate-500"/> : <FaChevronDown className="text-slate-500"/>}
                   </button>
 
                   {/* Grid de Herramientas (Condicional) */}
@@ -180,10 +180,10 @@ const Catalog = () => {
                         return (
                           <div
                             key={tool._id}
-                            className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col justify-between border border-gray-100"
+                            className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col justify-between border border-slate-100"
                           >
                                   {/* ⬇️⬇️⬇️ AGREGAR LA IMAGEN AQUÍ COMO PRIMER ELEMENTO ⬇️⬇️⬇️ */}
-                                  <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden mb-4">
+                                  <div className="w-full h-48 bg-slate-200 rounded-lg overflow-hidden mb-4">
                                     <img
                                       src={tool.image || PLACEHOLDER_IMG}
                                       alt={tool.name}
@@ -207,22 +207,22 @@ const Catalog = () => {
                             </div>
 
                             {/* Contenido Tarjeta */}
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                            <h3 className="text-lg font-semibold text-slate-800 mb-2">
                               {tool.name || 'Sin nombre'}
                             </h3>
-                            <p className="text-sm text-gray-500 mb-1">
-                              <span className="font-medium text-gray-700">Loc:</span> {tool.location || 'N/A'}
+                            <p className="text-sm text-slate-500 mb-1">
+                              <span className="font-medium text-slate-700">Loc:</span> {tool.location || 'N/A'}
                             </p>
                             {tool.serialNumber && (
-                              <p className="text-sm text-gray-500 mb-1">
-                                  <span className="font-medium text-gray-700">S/N:</span> {tool.serialNumber}
+                              <p className="text-sm text-slate-500 mb-1">
+                                  <span className="font-medium text-slate-700">S/N:</span> {tool.serialNumber}
                               </p>
                              )}
 
                             {/* Botón */}
                             <button
                               onClick={() => navigate(`/tools/${tool._id}`)}
-                              className="mt-4 w-full bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700"
+                              className="mt-4 w-full bg-primary-600 text-white text-sm px-4 py-2 rounded hover:bg-primary-700"
                             >
                               Ver Detalles
                             </button>

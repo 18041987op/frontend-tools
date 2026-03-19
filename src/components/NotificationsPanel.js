@@ -106,7 +106,7 @@ const NotificationsPanel = ({ unreadCount, setUnreadCount }) => {
     <div className="relative">
       {/* Campana de notificaciones */}
       <button 
-        className="notification-bell relative text-white focus:outline-none"
+        className="notification-bell relative text-slate-600 hover:text-slate-800 focus:outline-none p-2 rounded-xl hover:bg-slate-100 transition-colors"
         onClick={handleBellClick}
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -125,45 +125,45 @@ const NotificationsPanel = ({ unreadCount, setUnreadCount }) => {
       {showPanel && (
         <div 
           ref={panelRef}
-          className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20"
+          className="absolute right-0 mt-2 w-80 bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden z-20"
         >
-          <div className="py-2 px-3 bg-gray-100 flex justify-between items-center">
+          <div className="py-2 px-3 bg-slate-100 flex justify-between items-center">
             <h3 className="text-sm font-semibold">Notificaciones</h3>
             {unreadCount > 0 && (
               <button 
                 onClick={handleMarkAllAsRead}
-                className="text-xs text-blue-500 hover:text-blue-700"
+                className="text-xs text-primary-500 hover:text-primary-700"
               >
                 Marcar todas como leídas
               </button>
             )}
           </div>
           
-          <div className="divide-y divide-gray-100 max-h-96 overflow-y-auto">
+          <div className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
             {loading ? (
-              <div className="py-4 text-center text-gray-500">Cargando...</div>
+              <div className="py-4 text-center text-slate-500">Cargando...</div>
             ) : error ? (
               <div className="py-4 text-center text-red-500">{error}</div>
             ) : notifications.length === 0 ? (
-              <div className="py-4 text-center text-gray-500">No tienes notificaciones</div>
+              <div className="py-4 text-center text-slate-500">No tienes notificaciones</div>
             ) : (
               notifications.map(notification => (
                 <div 
                   key={notification._id}
-                  className={`p-3 hover:bg-gray-50 cursor-pointer ${!notification.read ? 'bg-blue-50' : ''}`}
+                  className={`p-3 hover:bg-slate-50 cursor-pointer ${!notification.read ? 'bg-primary-50' : ''}`}
                   onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <p className={`text-sm font-medium ${!notification.read ? 'text-blue-900' : 'text-gray-900'}`}>
+                      <p className={`text-sm font-medium ${!notification.read ? 'text-primary-900' : 'text-slate-900'}`}>
                         {notification.title}
                       </p>
-                      <p className="text-xs text-gray-500">{formatDate(notification.createdAt)}</p>
-                      <p className={`mt-1 text-sm ${!notification.read ? 'text-blue-800' : 'text-gray-600'}`}>
+                      <p className="text-xs text-slate-500">{formatDate(notification.createdAt)}</p>
+                      <p className={`mt-1 text-sm ${!notification.read ? 'text-primary-800' : 'text-slate-600'}`}>
                         {notification.message}
                       </p>
                     </div>
-                    <div className={`h-2 w-2 rounded-full ${!notification.read ? 'bg-blue-400' : 'bg-transparent'}`}></div>
+                    <div className={`h-2 w-2 rounded-full ${!notification.read ? 'bg-primary-400' : 'bg-transparent'}`}></div>
                   </div>
                 </div>
               ))

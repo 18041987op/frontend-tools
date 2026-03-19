@@ -35,7 +35,7 @@ const ActivateAccount = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
       <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
         <h1 className="text-2xl font-semibold text-center mb-6">Activar Cuenta</h1>
         {message && (
@@ -45,31 +45,31 @@ const ActivateAccount = () => {
         )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-1">Nueva Contraseña</label>
+            <label className="block text-slate-700 mb-1">Nueva Contraseña</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500"
+              className="w-full border border-slate-300 p-2 rounded focus:outline-none focus:border-primary-500"
               placeholder="********"
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 mb-1">Confirmar Contraseña</label>
+            <label className="block text-slate-700 mb-1">Confirmar Contraseña</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500"
+              className="w-full border border-slate-300 p-2 rounded focus:outline-none focus:border-primary-500"
               placeholder="********"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition-colors"
+            className="w-full bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2 px-4 rounded transition-colors"
           >
             {loading ? 'Activando...' : 'Activar Cuenta'}
           </button>

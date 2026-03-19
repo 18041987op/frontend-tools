@@ -103,8 +103,8 @@ const DashboardAdmin = () => {
       label:   'On Loan',
       value:   onLoan,
       icon:    HiOutlineArrowPath,
-      color:   'bg-blue-600',
-      iconBg:  'bg-blue-500',
+      color:   'bg-primary-600',
+      iconBg:  'bg-primary-500',
       to:      '/admin/borrowed-tools',
     },
     {
@@ -228,7 +228,7 @@ const DashboardAdmin = () => {
                         <div className="min-w-0">
                           <Link
                             to={`/tools/${loan.tool?._id}`}
-                            className="text-sm font-semibold text-slate-800 hover:text-blue-600 hover:underline"
+                            className="text-sm font-semibold text-slate-800 hover:text-primary-600 hover:underline"
                           >
                             {loan.tool?.name || 'Deleted Tool'}
                           </Link>

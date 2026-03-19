@@ -65,31 +65,31 @@ const AdminReports = () => {
   const renderReportTable = (title, data, loading, error, countField, countLabel) => {
     return (
       <div className="bg-white rounded-xl shadow p-4 md:p-6 mb-8">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
+        <h2 className="text-xl font-semibold text-slate-800 mb-4">{title}</h2>
         {error && <p className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</p>}
         {loading ? (
-           <p className="text-gray-500 italic">Loading report...</p>
+           <p className="text-slate-500 italic">Loading report...</p>
         ) : data.length === 0 ? (
-          <p className="text-gray-500 italic">No data available for this report.</p>
+          <p className="text-slate-500 italic">No data available for this report.</p>
         ) : (
           <div className="overflow-x-auto max-h-96"> {/* Scrollable table */}
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50 sticky top-0 z-10">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-50 sticky top-0 z-10">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technician</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{countLabel}</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Technician</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{countLabel}</th>
                   {/* Future columns could go here */}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-slate-200">
                 {data.map((item) => (
                   <tr key={item.technicianId}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
                       {item.technicianName}
                        {/* Link to user edit page */}
-                       <Link to={`/admin/users/${item.technicianId}/edit`} className="text-blue-500 hover:text-blue-700 ml-2 text-xs">(Edit)</Link>
+                       <Link to={`/admin/users/${item.technicianId}/edit`} className="text-primary-500 hover:text-primary-700 ml-2 text-xs">(Edit)</Link>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                       {item[countField]}
                     </td>
                   </tr>
@@ -106,7 +106,7 @@ const AdminReports = () => {
   return (
     <Layout>
       <div className="p-4 sm:p-6 md:p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Admin Reports</h1>
+        <h1 className="text-3xl font-bold text-slate-900 mb-6">Admin Reports</h1>
 
         {/* Late Returns Report Table */}
         {renderReportTable(

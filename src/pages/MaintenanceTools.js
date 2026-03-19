@@ -84,8 +84,8 @@ const MaintenanceTools = () => {
       <Layout>
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
           <p>No tienes permisos para acceder a esta página.</p>
-          <button 
-            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+          <button
+            className="mt-2 bg-primary-500 text-white px-4 py-2 rounded"
             onClick={() => navigate('/dashboard')}
           >
             Volver al Dashboard
@@ -97,9 +97,9 @@ const MaintenanceTools = () => {
 
   return (
     <Layout>
-      <div>
+      <div className="p-4 sm:p-6 md:p-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Herramientas en Mantenimiento</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Herramientas en Mantenimiento</h1>
         </div>
 
         {error && (
@@ -116,49 +116,49 @@ const MaintenanceTools = () => {
 
         {loading ? (
           <div className="text-center py-10">
-            <p className="text-gray-500">Cargando herramientas...</p>
+            <p className="text-slate-500">Cargando herramientas...</p>
           </div>
         ) : tools.length === 0 ? (
           <div className="bg-white p-6 rounded shadow text-center">
-            <p className="text-gray-600 mb-4">No hay herramientas en mantenimiento actualmente.</p>
-            <button 
-              onClick={() => navigate('/catalog')} 
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            <p className="text-slate-600 mb-4">No hay herramientas en mantenimiento actualmente.</p>
+            <button
+              onClick={() => navigate('/catalog')}
+              className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded"
             >
               Ver Catálogo de Herramientas
             </button>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Herramienta
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Categoría
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Ubicación
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-slate-200">
                 {tools.map((tool) => (
-                  <tr key={tool._id} className="hover:bg-gray-50">
+                  <tr key={tool._id} className="hover:bg-slate-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{tool.name}</div>
-                      <div className="text-sm text-gray-500">{tool.serialNumber}</div>
+                      <div className="text-sm font-medium text-slate-900">{tool.name}</div>
+                      <div className="text-sm text-slate-500">{tool.serialNumber}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm text-slate-900">
                         {tool.category === 'diagnostico' ? 'Diagnóstico' : 
                          tool.category === 'electricidad' ? 'Electricidad' : 
                          tool.category === 'mecanica' ? 'Mecánica' : 
@@ -173,7 +173,7 @@ const MaintenanceTools = () => {
                         {tool.status === 'damaged' ? 'Dañada' : 'Mantenimiento'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                       {tool.location}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -185,7 +185,7 @@ const MaintenanceTools = () => {
                       </button>
                       <button
                         onClick={() => navigate(`/tools/${tool._id}`)}
-                        className="text-blue-600 hover:text-blue-900"
+                        className="text-primary-600 hover:text-primary-900"
                       >
                         Ver Detalles
                       </button>

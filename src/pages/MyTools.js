@@ -70,7 +70,7 @@ const MyTools = () => {
           case 'dueSoon': return 'text-orange-500';
           case 'dueToday': return 'text-yellow-600';
           case 'safe': return 'text-green-600';
-          default: return 'text-gray-500';
+          default: return 'text-slate-500';
       }
   }, []);
 
@@ -138,7 +138,7 @@ const MyTools = () => {
     <Layout>
       {/* Added consistent padding */}
       <div className="p-4 sm:p-6 md:p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">My Borrowed Tools</h1> {/* English Title */}
+        <h1 className="text-2xl font-bold text-slate-800 mb-6">My Borrowed Tools</h1> {/* English Title */}
 
         {error && (
           <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -148,15 +148,15 @@ const MyTools = () => {
 
         {loading ? (
           <div className="text-center py-10">
-            <p className="text-gray-500">Loading borrowed tools...</p> {/* English Text */}
+            <p className="text-slate-500">Loading borrowed tools...</p> {/* English Text */}
           </div>
         ) : loans.length === 0 ? (
           // Added consistent styling
           <div className="bg-white p-6 rounded-xl shadow text-center">
-            <p className="text-gray-600 mb-4">You currently have no tools on loan.</p> {/* English Text */}
+            <p className="text-slate-600 mb-4">You currently have no tools on loan.</p> {/* English Text */}
             <button
               onClick={() => navigate('/catalog')}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded"
             >
               View Tool Catalog {/* English Text */}
             </button>
@@ -181,19 +181,19 @@ const MyTools = () => {
                 // Added consistent styling to the card
                 <div key={loan._id} className="bg-white p-4 rounded-xl shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   {/* Link to tool details */}
-                  <Link to={`/tools/${loan.tool._id}`} className="flex-grow hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded p-1 -m-1">
-                      <h2 className="text-lg font-semibold text-gray-900">{loan.tool.name}</h2>
-                      <p className="text-sm text-gray-600">
+                  <Link to={`/tools/${loan.tool._id}`} className="flex-grow hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300 rounded p-1 -m-1">
+                      <h2 className="text-lg font-semibold text-slate-900">{loan.tool.name}</h2>
+                      <p className="text-sm text-slate-600">
                         Borrowed: {formatDate(loan.borrowedAt)} | Return Due: {formatDate(loan.expectedReturn)}
                       </p>
                       {/* English Labels */}
                       {loan.purpose && (
-                         <p className="text-sm text-gray-500 mt-1">
+                         <p className="text-sm text-slate-500 mt-1">
                           Purpose: {loan.purpose}
                          </p>
                       )}
                       {loan.vehicle && (
-                         <p className="text-sm text-gray-500">
+                         <p className="text-sm text-slate-500">
                           Vehicle: {loan.vehicle}
                          </p>
                       )}
@@ -207,7 +207,7 @@ const MyTools = () => {
                     </p>
                     <button
                       onClick={() => handleReturnClick(loan)} // Opens the return modal
-                      className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-green-300"
+                      className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary-300"
                     >
                       Return {/* English Text */}
                     </button>
@@ -231,27 +231,27 @@ const MyTools = () => {
                     <input
                       type="checkbox" name="hasDamage"
                       checked={returnData.returnCondition.hasDamage} onChange={handleReturnChange}
-                      className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
                     />
-                    <span className="text-sm text-gray-700">Report damage or issue with the tool?</span> {/* English Text */}
+                    <span className="text-sm text-slate-700">Report damage or issue with the tool?</span> {/* English Text */}
                   </label>
                 </div>
                 {returnData.returnCondition.hasDamage && (
                   <div className="mb-4">
-                    <label htmlFor="damageDescription" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="damageDescription" className="block text-sm font-medium text-slate-700 mb-1">
                       Describe Damage/Issue *
                     </label>
                     <textarea
                       id="damageDescription" name="damageDescription" required={returnData.returnCondition.hasDamage}
                       value={returnData.returnCondition.damageDescription} onChange={handleReturnChange} rows="3"
-                      className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+                      className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"
                       placeholder="Briefly describe the problem..." // English Text
                     />
                   </div>
                 )}
                 <div className="flex justify-end gap-3 pt-4">
-                  <button type="button" onClick={() => setShowReturnModal(false)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</button> {/* English Text */}
-                  <button type="submit" disabled={returnLoading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{returnLoading ? 'Processing...' : 'Confirm Return'}</button> {/* English Text */}
+                  <button type="button" onClick={() => setShowReturnModal(false)} className="bg-slate-300 hover:bg-slate-400 text-slate-800 font-bold py-2 px-4 rounded">Cancel</button> {/* English Text */}
+                  <button type="submit" disabled={returnLoading} className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">{returnLoading ? 'Processing...' : 'Confirm Return'}</button> {/* English Text */}
                 </div>
               </form>
             </div>
@@ -334,7 +334,7 @@ export default MyTools;
 //           case 'dueSoon': return 'text-orange-500';
 //           case 'dueToday': return 'text-yellow-600';
 //           case 'safe': return 'text-green-600';
-//           default: return 'text-gray-500';
+//           default: return 'text-slate-500';
 //       }
 //   }, []);
 //   // --- FIN NUEVAS FUNCIONES ---
@@ -481,20 +481,20 @@ export default MyTools;
 //                     <input
 //                       type="checkbox" name="hasDamage"
 //                       checked={returnData.returnCondition.hasDamage} onChange={handleReturnChange}
-//                       className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+//                       className="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
 //                     />
 //                     <span className="text-sm text-gray-700">¿La herramienta presenta algún daño/problema?</span>
 //                   </label>
 //                 </div>
 //                 {returnData.returnCondition.hasDamage && (
 //                   <div className="mb-4">
-//                     <label htmlFor="damageDescription" className="block text-sm font-medium text-gray-700 mb-1">
+//                     <label htmlFor="damageDescription" className="block text-sm font-medium text-slate-700 mb-1">
 //                       Descripción del daño o problema *
 //                     </label>
 //                     <textarea
 //                       id="damageDescription" name="damageDescription" required={returnData.returnCondition.hasDamage}
 //                       value={returnData.returnCondition.damageDescription} onChange={handleReturnChange} rows="3"
-//                       className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
+//                       className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-slate-300 rounded-md p-2"
 //                       placeholder="Describe brevemente el problema..."
 //                     />
 //                   </div>

@@ -136,12 +136,12 @@ const ToolManagement = () => {
   return (
     <Layout>
       <div className="p-4 sm:p-6 md:p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Administración de Herramientas</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mb-6">Administración de Herramientas</h1>
 
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {/* Columna del Formulario */}
           <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Agregar Nueva Herramienta</h2>
+            <h2 className="text-xl font-semibold mb-4 text-slate-700">Agregar Nueva Herramienta</h2>
 
             {error && (
               <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -154,7 +154,7 @@ const ToolManagement = () => {
                 {createdTool && (
                   <button
                     onClick={() => handleGenerateQR(createdTool._id, createdTool.name)}
-                    className="ml-4 text-blue-600 hover:text-blue-800 font-semibold"
+                    className="ml-4 text-primary-600 hover:text-primary-800 font-semibold"
                   >
                     Generar QR
                   </button>
@@ -166,10 +166,10 @@ const ToolManagement = () => {
               
               {/* ⬇️ NUEVO: Campo de Imagen */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Imagen de la Herramienta (Opcional)
                 </label>
-                <div className="mt-2 w-full rounded-lg overflow-hidden bg-gray-100 mb-3" style={{ aspectRatio: '16 / 9' }}>
+                <div className="mt-2 w-full rounded-lg overflow-hidden bg-slate-100 mb-3" style={{ aspectRatio: '16 / 9' }}>
                   <img
                     src={imagePreview || PLACEHOLDER_IMG}
                     alt="Preview"
@@ -180,19 +180,19 @@ const ToolManagement = () => {
                   id="image"
                   type="file"
                   accept="image/*"
-                  className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  className="block w-full text-sm text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
                   onChange={(e) => {
                     const file = e.target.files?.[0] || null;
                     setImageFile(file);
                     setImagePreview(file ? URL.createObjectURL(file) : '');
                   }}
                 />
-                <p className="text-xs text-gray-500 mt-1">Formatos: JPG/PNG. Tamaño máx: 5MB.</p>
+                <p className="text-xs text-slate-500 mt-1">Formatos: JPG/PNG. Tamaño máx: 5MB.</p>
               </div>
 
               {/* Nombre */}
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="name">
                   Nombre <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -202,14 +202,14 @@ const ToolManagement = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder="Ej: Llave Inglesa 12mm"
                 />
               </div>
 
               {/* Categoría */}
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="category">
                   Categoría <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -218,7 +218,7 @@ const ToolManagement = () => {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
                 >
                   <option value="diagnostico">Diagnóstico</option>
                   <option value="manuales">Herramientas Manuales</option>
@@ -238,7 +238,7 @@ const ToolManagement = () => {
 
               {/* Número de Serie */}
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="serialNumber">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="serialNumber">
                   Número de Serie
                 </label>
                 <input
@@ -247,14 +247,14 @@ const ToolManagement = () => {
                   name="serialNumber"
                   value={formData.serialNumber}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder="Ej: SN12345"
                 />
               </div>
 
               {/* Ubicación */}
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="location">
                   Ubicación <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -264,14 +264,14 @@ const ToolManagement = () => {
                   value={formData.location}
                   onChange={handleChange}
                   required
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder="Ej: Gabinete 3, Estante B"
                 />
               </div>
 
               {/* Costo */}
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cost">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="cost">
                   Costo/Valor Estimado (USD)
                 </label>
                 <input
@@ -282,14 +282,14 @@ const ToolManagement = () => {
                   onChange={handleChange}
                   step="0.01"
                   min="0"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder="Ej: 150.00"
                 />
               </div>
 
               {/* Descripción */}
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                <label className="block text-slate-700 text-sm font-bold mb-2" htmlFor="description">
                   Descripción (Opcional)
                 </label>
                 <textarea
@@ -298,7 +298,7 @@ const ToolManagement = () => {
                   value={formData.description}
                   onChange={handleChange}
                   rows="3"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder="Detalles adicionales sobre la herramienta..."
                 />
               </div>
@@ -307,7 +307,7 @@ const ToolManagement = () => {
               <div className="flex items-center justify-end">
                 <button
                   type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   disabled={loading}
                 >
                   {loading ? 'Guardando...' : 'Guardar Herramienta'}
@@ -351,21 +351,21 @@ const ToolManagement = () => {
                   fgColor="#000000"
                 />
               </div>
-              <p className="text-sm text-gray-600 mb-4 text-center">
+              <p className="text-sm text-slate-600 mb-4 text-center">
                 Escanea este código para ver los detalles de la herramienta.
               </p>
               <div className="flex items-center justify-between">
                 <button
                   type="button"
                   onClick={() => setShowQR(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-slate-300 hover:bg-slate-400 text-slate-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   Cerrar
                 </button>
                 <button
                   type="button"
                   onClick={handleDownloadQR}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   Descargar QR
                 </button>
@@ -511,7 +511,7 @@ export default ToolManagement;
 //                 {createdTool && (
 //                   <button
 //                     onClick={() => handleGenerateQR(createdTool._id, createdTool.name)}
-//                     className="ml-4 text-blue-600 hover:text-blue-800 font-semibold"
+//                     className="ml-4 text-primary-600 hover:text-primary-800 font-semibold"
 //                     aria-label="Generar Código QR"
 //                   >
 //                     Generar QR
